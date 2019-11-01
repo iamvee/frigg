@@ -1,0 +1,23 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "kenevist.com" {
+	type master;
+	file "/etc/bind/kenevist.com.hosts";
+	};
+
+zone "kenevist.ir" {
+	type master;
+	file "/etc/bind/kenevist.ir.hosts";
+	};
+
+
+zone "pouyamn.ir" {
+	type master;
+	file "/etc/bind/pouyamn.ir.hosts";
+	};

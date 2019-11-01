@@ -1,0 +1,13 @@
+$ttl 38400
+pouyamn.ir.	IN	SOA	ns1.pouyamn.ir. mn\.pouya.gmail.com. (
+			2019192615
+			10800
+			3600
+			604800
+			38400 )
+pouyamn.ir.	IN	NS	ns1.pouyamn.ir.
+pouyamn.ir.	IN	A	185.252.31.110
+pouyamn.ir.	IN	NS	ns2.pouyamn.ir.
+ns1.pouyamn.ir.	IN	A	185.252.31.110
+ns2.pouyamn.ir.	IN	A	198.143.178.51
+*.pouyamn.ir.	IN	CNAME	pouyamn.ir.

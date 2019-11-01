@@ -1,0 +1,13 @@
+$ttl 38400
+kenevist.com.	IN	SOA	ns1.kenevist.com. mn\.pouya.gmail.com. (
+			2019192615
+			10800
+			3600
+			604800
+			38400 )
+kenevist.com.	IN	NS	ns1.kenevist.com.
+kenevist.com.	IN	A	185.252.31.110
+kenevist.com.	IN	NS	ns2.kenevist.com.
+ns1.kenevist.com.	IN	A	185.252.31.110
+ns2.kenevist.com.	IN	A	198.143.178.51
+*.kenevist.com.	IN	CNAME	kenevist.com.
