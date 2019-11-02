@@ -24,7 +24,7 @@ services:
 
       - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_TLSCHALLENGE=true
       # remove below line to enable letsencrypt
-      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_CASERVER=https://acme-staging-v02.api.letsencrypt.org/directory"
+      # - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_CASERVER=https://acme-staging-v02.api.letsencrypt.org/directory"
       - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_EMAIL=kenevist@gmail.com
       - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_STORAGE=/letsencrypt/acme.json
 
