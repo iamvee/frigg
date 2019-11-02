@@ -10,23 +10,23 @@ services:
       # comment below line to set it to default ERROR
       - TRAEFIK_LOG_LEVEL = DEBUG
 
-      - TRAEFIK_ENTRYPOINTS_websecure = true
-      - TRAEFIK_ENTRYPOINTS_websecure_ADDRESS = ":443"
-      - TRAEFIK_ENTRYPOINTS_web = true
-      - TRAEFIK_ENTRYPOINTS_web_ADDRESS = ":80"
+      - TRAEFIK_ENTRYPOINTS_websecure=true
+      - TRAEFIK_ENTRYPOINTS_websecure_ADDRESS=":443"
+      - TRAEFIK_ENTRYPOINTS_web=true
+      - TRAEFIK_ENTRYPOINTS_web_ADDRESS=":80"
 
       #- TRAEFIK_API = true
       #- TRAEFIK_API_DEBUG = true
       #- TRAEFIK_API_INSECURE = true
 
-      - TRAEFIK_PROVIDERS_DOCKER = true
-      - TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT = false
+      - TRAEFIK_PROVIDERS_DOCKER=true
+      - TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT=false
 
-      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_TLSCHALLENGE = true
+      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_TLSCHALLENGE=true
       # remove below line to enable letsencrypt
-      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_CASERVER = https://acme-staging-v02.api.letsencrypt.org/directory"
-      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_EMAIL = kenevist@gmail.com
-      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_STORAGE = /letsencrypt/acme.json
+      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_CASERVER=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_EMAIL=kenevist@gmail.com
+      - TRAEFIK_CERTIFICATESRESOLVERS_letsencrypt_ACME_STORAGE=/letsencrypt/acme.json
 
  
     ports:
