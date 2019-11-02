@@ -12,6 +12,12 @@ services:
     networks:
       - backend
 
+    labels:
+      - "traefik.http.routers.gitlab.tls=true"
+      - "traefik.http.routers.gitlab.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.gitlab.entrypoints=websecure"
+      - "traefik.http.routers.gitlab.rule=Host(`git.kenevist.ir`)"
+
     environment:
       - DEBUG=false
 
