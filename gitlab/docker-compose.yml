@@ -3,30 +3,40 @@ services:
   gitlab:
     restart: always
     image: sameersbn/gitlab:12.4.0
+    container_name: "gitlab"
     ports:
       - "10080:80"
       # - "10022:22"
     volumes:
-      - ./data:/home/git/data
+      - gitlab:/home/git/data
 
     networks:
+      - web
+      # to access redis
       - backend
+
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.gitlab.frontend.rule=Host:git.kenevist.ir"
+      - "traefik.gitlab.port=10080"
+      - "traefik.gitlab.protocol=http"
 
     environment:
       - DEBUG=false
 
       - DB_ADAPTER=postgresql
-      - DB_HOST=185.252.31.110
+      - DB_HOST=host.docker.internal
       - DB_PORT=5432
-      - DB_USER=gitlab
-      - DB_PASS=${PASSWORD}
-      - DB_NAME=gitlabhq_production
+      - DB_USER=${GITLAB_DB_USER}
+      - DB_PASS=${GITLAB_DB_PASS}
+      - DB_NAME=${GITLAB_DB_NAME}
 
       - REDIS_HOST=redis
       - REDIS_PORT=6379
 
-      - TZ=Asia/Kolkata
-      - GITLAB_TIMEZONE=Kolkata
+      - TZ=Asia/Tehran
+      - GITLAB_TIMEZONE=Tehran
 
       - GITLAB_HTTPS=false
       - SSL_SELF_SIGNED=false
@@ -34,7 +44,7 @@ services:
       - GITLAB_HOST=localhost
       - GITLAB_PORT=10080
       - GITLAB_SSH_PORT=10022
-      - GITLAB_RELATIVE_URL_ROOT=
+      - GITLAB_RELATIVE_URL_ROOT=git.kenevist.ir
       - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
       - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
       - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
@@ -133,5 +143,10 @@ services:
       - OAUTH_AZURE_TENANT_ID=
 
 networks:
+  web:
+    external: true
   backend:
     external: true
+
+volumes:
+  gitlab:

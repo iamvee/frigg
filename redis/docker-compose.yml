@@ -7,10 +7,13 @@ services:
     command:
       - --loglevel warning
     volumes:
-      - ./data:/data
+      - redis:/data
     networks:
       - backend
 
 networks:
   backend:
     external: true
+
+volumes:
+  redis:
