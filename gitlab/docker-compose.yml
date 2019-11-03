@@ -3,6 +3,7 @@ services:
   gitlab:
     restart: always
     image: sameersbn/gitlab:12.4.0
+    container_name: "gitlab"
     ports:
       - "10080:80"
       # - "10022:22"
@@ -10,23 +11,26 @@ services:
       - ./data:/home/git/data
 
     networks:
+      - web
+      # to access redis
       - backend
 
     labels:
-      - "traefik.http.routers.gitlab.tls=true"
-      - "traefik.http.routers.gitlab.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.gitlab.entrypoints=websecure"
-      - "traefik.http.routers.gitlab.rule=Host(`git.kenevist.ir`)"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.gitlab.frontend.rule=Host:git.kenevist.ir"
+      - "traefik.gitlab.port=80"
+      - "traefik.gitlab.protocol=http"
 
     environment:
       - DEBUG=false
 
       - DB_ADAPTER=postgresql
-      - DB_HOST=185.252.31.110
+      - DB_HOST=host.docker.internal
       - DB_PORT=5432
-      - DB_USER=gitlab
-      - DB_PASS=${PASSWORD}
-      - DB_NAME=gitlabhq_production
+      - DB_USER=${GITLAB_DB_USER}
+      - DB_PASS=${GITLAB_DB_PASS}
+      - DB_NAME=${GITLAB_DB_NAME}
 
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -139,5 +143,7 @@ services:
       - OAUTH_AZURE_TENANT_ID=
 
 networks:
+  web:
+    external: true
   backend:
     external: true
