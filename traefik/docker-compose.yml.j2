@@ -1,0 +1,54 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v1.7"
+    container_name: "traefik"
+ 
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    networks:
+      - web
+    volumes:
+      - "traefik:/acme"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    
+    command:
+      - --debug=true
+      - --logLevel=DEBUG
+      - --defaultentrypoints=https,http
+      - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
+      - --entryPoints=Name:https Address::443 TLS
+      - --retry
+      - --docker.endpoint=unix:///var/run/docker.sock
+      - --docker.domain="traefik_defaults.domain"
+      - --docker.watch=true
+      - --docker.exposedbydefault=false
+      - --acme.email={{ traefik_defaults.email }}
+      - --acme.storage=/acme/acme.json
+      - --acme.entryPoint=https
+      - --acme.onHostRule=true
+      - --acme.httpchallenge.entrypoint=http
+
+
+  whoami:
+    image: "containous/whoami"
+    container_name: "simple-service"
+    networks:
+      - web
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.whoami.frontend.rule=Host:{{ whoami_defaults.domain }}"
+      - "traefik.whoami.port=80"
+      - "traefik.whoami.protocol=http"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  traefik:
