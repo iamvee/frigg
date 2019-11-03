@@ -15,37 +15,36 @@ services:
     volumes:
       - "./data:/acme"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - ./traefik.toml:/traefik.toml
-
-    labels:
-      # Dashboard
-      - "traefik.http.routers.traefik.rule=Host(`traefik.kenevist.ir`)"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.tls.certresolver=leresolver"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      #- "traefik.http.routers.traefik.middlewares=authtraefik"
-      #- "traefik.http.middlewares.authtraefik.basicauth.users=user:$$apr1$$q8eZFHjF$$Fvmkk//V6Btlaf2i/ju5n/" # user/password
-
-      # global redirect to https
-      - "traefik.http.routers.http-catchall.rule=hostregexp(`{any:.+}`)"
-      - "traefik.http.routers.http-catchall.entrypoints=web"
-      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-
-      # middleware redirect
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
+    
+    command:
+      - --debug=true
+      - --logLevel=DEBUG
+      - --defaultentrypoints=https,http
+      - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
+      - --entryPoints=Name:https Address::443 TLS
+      - --retry
+      - --docker.endpoint=unix:///var/run/docker.sock
+      - --docker.domain=kenevist.ir
+      - --docker.watch=true
+      - --docker.exposedbydefault=false
+      - --acme.email=kenevist@gmail.com
+      - --acme.storage=/acme/acme.json
+      - --acme.entryPoint=https
+      - --acme.onHostRule=true
+      - --acme.httpchallenge.entrypoint=http
 
 
   whoami:
     image: "containous/whoami"
     container_name: "simple-service"
+    networks:
+      - web
     labels:
-      - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.kenevist.ir`)"
-
+      - "traefik.docker.network=web"
       - "traefik.enable=true"
+      - "traefik.whoami.frontend.rule=Host:whoami.kenevist.ir"
+      - "traefik.whoami.port=80"
+      - "traefik.whoami.protocol=http"
 
 networks:
   web:
