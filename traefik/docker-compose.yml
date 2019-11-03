@@ -49,3 +49,6 @@ services:
 networks:
   web:
     external: true
+
+volumes:
+  traefik:

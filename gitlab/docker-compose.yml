@@ -147,3 +147,6 @@ networks:
     external: true
   backend:
     external: true
+
+volumes:
+  gitlab:
