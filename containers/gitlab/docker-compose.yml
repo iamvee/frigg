@@ -25,7 +25,7 @@ services:
       - DB_HOST=185.252.31.110
       - DB_PORT=5432
       - DB_USER=gitlab
-      - DB_PASS={$PASSWORD}
+      - DB_PASS={{ db_pass }}
       - DB_NAME=gitlabhq_production
 
       - REDIS_HOST=redis
